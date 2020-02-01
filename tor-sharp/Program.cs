@@ -9,10 +9,12 @@ namespace Tor
         private static void Main()
         {
 
+            // Reflects the location of the Tor executable, downloaded as part of the Windows Expert Bundle
             const string TOR_PATH = @"D:\Tor\tor.exe";
 
             string external_ip = new WebClient().DownloadString("https://icanhazip.com/");
 
+            // Dim the tor.exe console output
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Process.Start(TOR_PATH, "--HTTPTunnelPort 4711");
 
@@ -24,6 +26,10 @@ namespace Tor
 
         }
 
+        /// <summary>
+        /// Use port 4711 to proxy Tor traffic through the local loopback adddress.
+        /// </summary>
+        /// <returns>The new IP address being used via the Tor network.</returns>
         private static string GetTorIpAddress()
         {
             var proxy = new WebProxy(IPAddress.Loopback.ToString(), 4711);
