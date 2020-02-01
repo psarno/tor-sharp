@@ -16,15 +16,21 @@ namespace Tor
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Process.Start(TOR_PATH, "--HTTPTunnelPort 4711");
 
-            var proxy = new WebProxy(IPAddress.Loopback.ToString(), 4711);
-            var client = new WebClient { Proxy = proxy };
-            var bytes = client.DownloadData("https://canihazip.com/s");
-            string tor_ip = System.Text.Encoding.UTF8.GetString(bytes);
+            string tor_ip = GetTorIpAddress();
 
             ShowOutput(external_ip, tor_ip);
 
             Console.ReadKey();
 
+        }
+
+        private static string GetTorIpAddress()
+        {
+            var proxy = new WebProxy(IPAddress.Loopback.ToString(), 4711);
+            var client = new WebClient { Proxy = proxy };
+            var bytes = client.DownloadData("https://canihazip.com/s");
+            string tor_ip = System.Text.Encoding.UTF8.GetString(bytes);
+            return tor_ip;
         }
 
         /// <summary>
@@ -40,6 +46,7 @@ namespace Tor
 
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.Write("Your TOR IP Address is ");
+
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine(tor_ip);
 
